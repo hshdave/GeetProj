@@ -65,6 +65,7 @@ public class Bookdetails extends AppCompatActivity {
 
                 Picasso.with(Bookdetails.this).load(coverpath).into(bookdis);
 
+
                 database2 = FirebaseDatabase.getInstance();
                 myaut = database2.getReference("authors");
 
