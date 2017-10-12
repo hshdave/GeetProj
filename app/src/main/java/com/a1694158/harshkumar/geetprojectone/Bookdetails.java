@@ -3,6 +3,8 @@ package com.a1694158.harshkumar.geetprojectone;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +28,8 @@ public class Bookdetails extends AppCompatActivity {
     FirebaseDatabase database,database2;
     DatabaseReference myRef1,myaut;
 
+    Button btn_rent;
+
     ImageView bookdis;
 
     String autid,coverpath;
@@ -42,6 +46,7 @@ public class Bookdetails extends AppCompatActivity {
         bkqty = (TextView) findViewById(R.id.dis_bkqty);
         bkaut = (TextView) findViewById(R.id.dis_bkaut);
         bookdis = (ImageView) findViewById(R.id.img_book);
+        btn_rent = (Button) findViewById(R.id.btn_rent);
 
         Intent i = getIntent();
         String path = i.getStringExtra("key");
@@ -63,7 +68,29 @@ public class Bookdetails extends AppCompatActivity {
                 System.out.println("Cover Path   "+coverpath);
 
 
+
                 Picasso.with(Bookdetails.this).load(coverpath).into(bookdis);
+
+                final int qty = Integer.parseInt(dataSnapshot.child("quantity").getValue().toString());
+
+
+                btn_rent.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(qty<=0)
+                        {
+                            Toast.makeText(getApplicationContext(),"No More Books Available!",Toast.LENGTH_LONG).show();
+                        }else
+                        {
+                            Toast.makeText(getApplicationContext(),"Thank you for rent book",Toast.LENGTH_LONG).show();
+                        }
+
+
+                    }
+                });
+
+
+                System.out.println("Quantity in Integer  "+qty);
 
 
                 database2 = FirebaseDatabase.getInstance();
@@ -81,8 +108,6 @@ public class Bookdetails extends AppCompatActivity {
                            }
                         }
                     }
-
-
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
