@@ -1,10 +1,8 @@
 package com.a1694158.harshkumar.geetprojectone;
 
 import android.app.Dialog;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -54,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
 
                 for(DataSnapshot db  : dataSnapshot.getChildren())
                 {
-                   // System.out.println("Check me     "+db.child("title").getValue());
 
                     String bnm = db.child("title").getValue().toString();
                     booksarray.add(new Books(bnm));
@@ -131,9 +128,6 @@ public class MainActivity extends AppCompatActivity {
                 {
                     Toast.makeText(getApplicationContext(),"Please Select Choice!",Toast.LENGTH_LONG).show();
                 }
-
-
-
                 ds.dismiss();
 
             }

@@ -29,28 +29,24 @@
             tools:layout_editor_absoluteY="8dp">
 
             <TextView
-                android:id="@+id/sh_bknm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Name :"
                 android:textSize="25sp" />
 
             <TextView
-                android:id="@+id/sh_bkpub"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Publisher :"
                 android:textSize="25sp" />
 
             <TextView
-                android:id="@+id/sh_bkqty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Quantity  :"
                 android:textSize="25sp" />
 
             <TextView
-                android:id="@+id/sh_bkaut"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Author  :"
