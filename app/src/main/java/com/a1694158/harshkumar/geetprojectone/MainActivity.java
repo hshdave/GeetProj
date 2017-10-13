@@ -16,7 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-
+import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -53,8 +53,27 @@ public class MainActivity extends AppCompatActivity {
                 for(DataSnapshot db  : dataSnapshot.getChildren())
                 {
 
-                    String bnm = db.child("title").getValue().toString();
-                    booksarray.add(new Books(bnm));
+                    Boolean ca = db.child("shipToCanada").getValue(Boolean.class);
+                    Boolean us = db.child("shipToUSA").getValue(Boolean.class);
+
+                    if(isCanada(getLoc()))
+                    {
+                        if (ca.equals(true) || us.equals(false))
+                        {
+                            String bnm = db.child("title").getValue().toString();
+                            booksarray.add(new Books(bnm));
+                        }
+
+                    }else if (isUSA(getLoc()))
+                    {
+                         if (us.equals(true) || ca.equals(false))
+                         {
+                             String bnm = db.child("title").getValue().toString();
+                             booksarray.add(new Books(bnm));
+                         }
+                    }
+
+
                 }
 
                 ls = new ListAdapter(MainActivity.this,booksarray);
@@ -242,6 +261,33 @@ public class MainActivity extends AppCompatActivity {
         ls = new ListAdapter(MainActivity.this,booksarray);
         listme.setAdapter(ls);
         ls.notifyDataSetChanged();
+    }
+
+
+
+    public Boolean isCanada(String cn)
+    {
+        if(cn.equals("CA"))
+        {
+            return true;
+        }else {
+            return  false;
+        }
+    }
+
+    public Boolean isUSA(String cn)
+    {
+        if(cn.equals("US"))
+        {
+            return true;
+        }else {
+            return  false;
+        }
+    }
+
+    public String getLoc()
+    {
+        return Locale.getDefault().getCountry();
     }
 
 }
