@@ -1,6 +1,7 @@
 package com.a1694158.harshkumar.geetprojectone;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     ArrayList<Books> booksarray = new ArrayList<>();
+    ArrayList<String> catarray = new ArrayList<>();
 
     DatabaseReference db;
     FirebaseDatabase fd;
@@ -30,20 +32,37 @@ public class MainActivity extends AppCompatActivity {
 
 
     EditText search_txt;
-    Spinner spn_choice;
+    Spinner spn_choice,spn_cat;
     Button btn_search;
 
     ListView listme;
+
+    SpinnerAdapt spina;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        Intent i = getIntent();
+
+        String catkey = i.getStringExtra("cat");
+
+//        System.out.println("MainAct Cat "+catkey);
+
+
+        spn_cat = (Spinner) findViewById(R.id.spin_cat);
+
         listme = (ListView) findViewById(R.id.lst_main);
 
         fd  = FirebaseDatabase.getInstance();
         db = fd.getReference("books");
+
+        getCat();
+
+        getCatData();
+
 
 
         db.addValueEventListener(new ValueEventListener() {
@@ -86,6 +105,9 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+
+
 
     }
 
@@ -288,6 +310,73 @@ public class MainActivity extends AppCompatActivity {
     public String getLoc()
     {
         return Locale.getDefault().getCountry();
+    }
+
+
+    public void getCat()
+    {
+
+        FirebaseDatabase fb = FirebaseDatabase.getInstance();
+        DatabaseReference db = fb.getReference("category");
+
+        db.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot ds : dataSnapshot.getChildren())
+                {
+                 //   System.out.println(ds.getValue().toString());
+
+                    catarray.add(ds.getValue(String.class));
+                }
+
+                spina = new SpinnerAdapt(MainActivity.this,catarray);
+                spn_cat.setAdapter(spina);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void getCatData()
+    {
+        FirebaseDatabase fb = FirebaseDatabase.getInstance();
+        DatabaseReference ds = fb.getReference("books");
+
+        ds.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for(DataSnapshot ds : dataSnapshot.getChildren())
+                {
+
+                    if(ds.child("category").equals("Children Book"))
+                    {
+                        System.out.println("Category lst Check this "+ds.child("title").getValue());
+                    }
+
+
+                   /* if(ds.getKey().equals("1001"))
+                    {
+                        for(DataSnapshot ds1 : ds.child("category").getChildren())
+                        {
+                            System.out.println("Category lst Check this "+ds1.getValue());
+                        }
+                    }*/
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 }
